@@ -22,7 +22,7 @@
             <div v-for="(field, index) in fields" :key="index" class="d-flex justify-space-between">
               <v-text-field
                 v-model="field.name"
-                :rules="nameClassRules"
+                :rules="nameFieldRules"
                 label="Название поля"
                 required
                 :style="{ maxWidth: fields.length != 1 ? '45%' : '48%' }"
@@ -73,6 +73,12 @@ export default {
         v => v.length > 3 || "Длина имени должна быть больше 3",
         v => validName.test(v) || "Может содержать только латинские буквы, цифры и '_'. Начинается с буквы.",
         v => !this.names.includes(v) || "Данное имя уже занято",
+      ],
+      nameFieldRules: [
+        v => !!v || "Обязательное поле",
+        v => v.length > 3 || "Длина имени должна быть больше 3",
+        v => validName.test(v) || "Может содержать только латинские буквы, цифры и '_'. Начинается с буквы.",
+        v => this.fields.filter(el => el.name == v).length == 1 || "Поля в классе должны быть уникальными"
       ],
       fieldTypeRules: [
         v => !!v || "Обязательное поле",
