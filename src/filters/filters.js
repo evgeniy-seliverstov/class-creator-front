@@ -1,0 +1,1 @@
+export const validName = /^[a-zA-z][a-zA-Z\d_]+$/;
