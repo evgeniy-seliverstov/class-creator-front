@@ -123,18 +123,28 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .edit-button {
   position: absolute;
   width: 30px;
   height: 30px;
-  right: 10px;
+  right: 40px;
+  top: 7px;
   border: 1px solid rgba(0,0,0,0);
   transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 100%;
-}
-.edit-button:hover {
-  border: 1px solid rgba(0,0,0,0.5);
-  background: rgba(0,0,0,0.05);
+  
+  &:hover {
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.05);
+  }
+
+  i {
+    position: absolute;
+    left: 50%;
+    margin-left: -10px;
+    top: 1px;
+  }
 }
 </style>

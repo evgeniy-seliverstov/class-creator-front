@@ -30,6 +30,9 @@ export default new Vuex.Store({
     changeObject(state, object) {
       let obj = state.objects.find(v => v.id == object.id);
       Object.assign(obj, object);
+    },
+    deleteObject(state, id) {
+      state.objects = state.objects.filter(v => v.id != id);
     }
   },
   actions: {

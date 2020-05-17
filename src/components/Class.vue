@@ -1,17 +1,19 @@
 <template>
   <div class="d-flex flex-column grey lighten-2 class" color="grey darken-1">
-    <div class="class-title text-truncate text-center">
-      <span>{{ obj.name }}</span>
-      <edit-button :obj="obj" />
+    <div class="class-title text-truncate text-center" style="padding: 7px 70px;">
+      {{ obj.name }}
     </div>
     <div class="class-field text-truncate text-center" v-for="(field, index) in obj.fields" :key="index">
       {{ `${field.name}: ${types.find(v => v.id == field.type).name}` }}
     </div>
+    <edit-button :obj="obj" />
+    <delete-button :id="obj.id" />
   </div>
 </template>
 
 <script>
 import EditButton from "@/components/Buttons/EditButton";
+import DeleteButton from "@/components/Buttons/DeleteButton";
 
 export default {
   name: "Class",
@@ -27,19 +29,20 @@ export default {
     }
   },
   components: {
-    "edit-button": EditButton
+    "edit-button": EditButton,
+    "delete-button": DeleteButton
   }
 }
 </script>
 
 <style lang="scss">
 .class {
+  position: relative;
   width: 250px;
   border-radius: 5px;
   border: 1px solid;
 
   &-title {
-    position: relative;
     width: 100%;
     color: rgba(0,0,0,0.87);
     padding: 7px 10px;
