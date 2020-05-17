@@ -63,23 +63,31 @@ export default {
       required: true
     }
   },
-  data: () => ({
-    dialog: false,
-    valid: true,
-    name: "",
-    nameClassRules: [
-      v => !!v || "Обязательное поле",
-      v => v.length > 3 || "Длина имени должна быть больше 3",
-      v => validName.test(v) || "Может содержать только латинские буквы, цифры и '_'. Начинается с буквы."
-    ],
-    fieldTypeRules: [
-      v => !!v || "Обязательное поле",
-    ],
-    fields: [{ name: "", type: null }]
-  }),
+  data() {
+    return {
+      dialog: false,
+      valid: true,
+      name: "",
+      nameClassRules: [
+        v => !!v || "Обязательное поле",
+        v => v.length > 3 || "Длина имени должна быть больше 3",
+        v => validName.test(v) || "Может содержать только латинские буквы, цифры и '_'. Начинается с буквы.",
+        v => !this.names.includes(v) || "Данное имя уже занято",
+      ],
+      fieldTypeRules: [
+        v => !!v || "Обязательное поле",
+      ],
+      fields: [{ name: "", type: null }]
+    }
+  },
   computed: {
     types() {
       return this.$store.state.types.concat(this.$store.state.objects).filter(v => v.id != this.obj.id);
+    },
+    names() {
+      const names = [];
+      this.$store.state.objects.map(v => {names.push(v.name)});
+      return names.filter(v => v != this.obj.name);
     }
   },
   methods: {
