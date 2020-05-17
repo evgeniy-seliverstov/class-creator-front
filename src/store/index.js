@@ -50,7 +50,16 @@ export default new Vuex.Store({
       Object.assign(obj, object);
     },
     deleteObject(state, id) {
-      state.objects = state.objects.filter(v => v.id != id);
+      let f = true;
+      state.objects.forEach(v => {
+        v.fields.forEach(e => {
+          if (e.type == id) {
+            f = false;
+          }
+        })
+      });
+      if (f) state.objects = state.objects.filter(v => v.id != id);
+      else Vue.noty.error("Класс содержит подклассы. Прежде удалите подклассы.");
     },
 
     setActiveObject(state, id) {
