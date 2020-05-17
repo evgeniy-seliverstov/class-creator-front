@@ -24,6 +24,19 @@ export default new Vuex.Store({
           { name: "membership", type: 3 }
         ]
       },
+      {
+        id: 1001,
+        name: "ship2",
+        position: {
+          x: 500,
+          y: 200
+        },
+        fields: [
+          { name: "number", type: 1 },
+          { name: "count", type: 2 },
+          { name: "membership", type: 1000 }
+        ]
+      },
     ],
     activeObject: null
   },
