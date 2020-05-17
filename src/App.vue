@@ -6,7 +6,7 @@
         <generate-button class="ml-4"/>
       </div>
 
-      <class :obj="obj" class="ml-10"/>
+      <class v-for="(obj, index) in objects" :key="index" :obj="obj" class="ml-10"/>
     </v-content>
   </v-app>
 </template>
@@ -28,6 +28,11 @@ export default {
       ]
     }
   }),
+  computed: {
+    objects() {
+      return this.$store.state.objects;
+    }
+  },
   components: {
     "add-button": AddButton,
     "generate-button": GenerateButton,

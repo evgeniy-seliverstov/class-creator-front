@@ -18,7 +18,7 @@ export default {
   },
   computed: {
     types() {
-      return this.$store.state.types;
+      return this.$store.state.types.concat(this.$store.state.objects);
     }
   }
 }

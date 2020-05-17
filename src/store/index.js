@@ -23,6 +23,10 @@ export default new Vuex.Store({
     ]
   },
   mutations: {
+    addObject(state, object) {
+      let id = state.objects.length == 0 ? 1000 : state.objects[state.objects.length - 1].id + 1;
+      state.objects.push({ id, ...object });
+    }
   },
   actions: {
   },

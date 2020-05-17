@@ -75,9 +75,7 @@ export default {
   }),
   computed: {
     types() {
-      const types = [...this.$store.state.types].map(v => Object.assign(v, { type: "type" }));
-      const classes = [...this.$store.state.objects].map(v => {delete v.fields; return Object.assign(v, { type: "class" }); });
-      return types.concat(classes);
+      return this.$store.state.types.concat(this.$store.state.objects);
     }
   },
   methods: {
@@ -99,7 +97,7 @@ export default {
           name: this.name,
           fields: this.fields
         }
-        console.log("Add class: ", obj);
+        this.$store.commit("addObject", obj);
       }
     }
   }
