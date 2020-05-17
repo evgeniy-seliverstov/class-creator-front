@@ -1,10 +1,12 @@
 <template>
-  <div class="d-flex flex-column grey lighten-2 class" color="grey darken-1">
-    <div class="class-title text-truncate text-center" style="padding: 7px 70px;">
+  <div class="d-inline-block flex-column grey lighten-2 class" color="grey darken-1" :style="`left: ${obj.position.x}px; top: ${obj.position.y}px;`">
+    <div class="class-title text-truncate text-center unselectable" style="padding: 7px 70px;" @mousedown="mouseDown">
       {{ obj.name }}
     </div>
-    <div class="class-field text-truncate text-center" v-for="(field, index) in obj.fields" :key="index">
-      {{ `${field.name}: ${types.find(v => v.id == field.type).name}` }}
+    <div class="fields">
+      <div class="class-field text-truncate text-center unselectable" v-for="(field, index) in obj.fields" :key="index">
+        {{ `${field.name}: ${types.find(v => v.id == field.type).name}` }}
+      </div>
     </div>
     <edit-button :obj="obj" />
     <delete-button :id="obj.id" />
@@ -21,11 +23,22 @@ export default {
     obj: {
       type: Object,
       required: true
+    },
+    mouse: {
+      type: Object,
+      required: true
     }
   },
   computed: {
     types() {
       return this.$store.state.types.concat(this.$store.state.objects);
+    }
+  },
+  methods: {
+    mouseDown(e) {
+      this.mouse.shiftX = e.clientX - this.$el.getBoundingClientRect().left;
+      this.mouse.shiftY = e.clientY - this.$el.getBoundingClientRect().top;
+      this.$store.commit("setActiveObject", this.obj.id);
     }
   },
   components: {
@@ -37,10 +50,11 @@ export default {
 
 <style lang="scss">
 .class {
-  position: relative;
+  position: absolute;
   width: 250px;
   border-radius: 5px;
   border: 1px solid;
+  box-shadow: 0 3px 3px -2px rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 1px 8px 0 rgba(0,0,0,.12);
 
   &-title {
     width: 100%;
@@ -51,9 +65,16 @@ export default {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: grab;
+  }
 
-    &:hover {
-      cursor: pointer;
+  &.draggable {
+    z-index: 1000;
+    transform: scale(1.03);
+    box-shadow: 0 4px 5px -2px rgba(0,0,0,.2),0 7px 10px 1px rgba(0,0,0,.14),0 2px 16px 1px rgba(0,0,0,.12);
+
+    .class-title {
+      cursor: grabbing;
     }
   }
 

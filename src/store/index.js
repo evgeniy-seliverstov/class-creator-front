@@ -14,18 +14,23 @@ export default new Vuex.Store({
       {
         id: 1000,
         name: "ship",
+        position: {
+          x: 100,
+          y: 100
+        },
         fields: [
           { name: "number", type: 1 },
           { name: "count", type: 2 },
           { name: "membership", type: 3 }
         ]
       },
-    ]
+    ],
+    activeObject: null
   },
   mutations: {
     addObject(state, object) {
       let id = state.objects.length == 0 ? 1000 : state.objects[state.objects.length - 1].id + 1;
-      state.objects.push({ id, ...object });
+      state.objects.push({ id, ...object, position: { x: 100, y: 100 }});
     },
     changeObject(state, object) {
       let obj = state.objects.find(v => v.id == object.id);
@@ -33,6 +38,19 @@ export default new Vuex.Store({
     },
     deleteObject(state, id) {
       state.objects = state.objects.filter(v => v.id != id);
+    },
+
+    setActiveObject(state, id) {
+      state.activeObject = state.objects.find(v => v.id == id);
+    },
+    removeActiveObject(state) {
+      state.activeObject = null;
+    },
+    changeCoordinates(state, mouse) {
+      if (state.activeObject) {
+        state.activeObject.position.x = mouse.x - mouse.shiftX;
+        state.activeObject.position.y = mouse.y - mouse.shiftY;
+      }
     }
   },
   actions: {

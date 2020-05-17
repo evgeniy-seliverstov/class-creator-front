@@ -96,7 +96,8 @@ export default {
     openDialog() {
       this.dialog = true;
       this.valid = true;
-      this.nameClass = "";
+      this.name = "";
+      this.fields = [{ name: "", type: null }]
     },
     addField() {
       this.fields.push({ name: "", type: null });
