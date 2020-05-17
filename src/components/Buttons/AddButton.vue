@@ -14,7 +14,7 @@
         <v-card-text class="pt-5">
           <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="addClass">
             <v-text-field
-              v-model="nameClass"
+              v-model="name"
               :rules="nameClassRules"
               :label="`Название класса`"
               required
@@ -62,7 +62,7 @@ export default {
   data: () => ({
     dialog: false,
     valid: true,
-    nameClass: "",
+    name: "",
     nameClassRules: [
       v => !!v || "Обязательное поле",
       v => v.length > 3 || "Длина имени должна быть больше 3",
@@ -75,7 +75,9 @@ export default {
   }),
   computed: {
     types() {
-      return this.$store.state.types;
+      const types = [...this.$store.state.types].map(v => Object.assign(v, { type: "type" }));
+      const classes = [...this.$store.state.objects].map(v => {delete v.fields; return Object.assign(v, { type: "class" }); });
+      return types.concat(classes);
     }
   },
   methods: {
