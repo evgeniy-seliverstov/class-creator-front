@@ -1,18 +1,16 @@
 <template>
   <div class="d-inline">
-    <v-btn dark @click.prevent="openDialog">
-      <v-icon size="20" class="mr-2">mdi-plus-circle-outline</v-icon>
-      Добавить класс
-    </v-btn>
-    
-    
+    <div class="d-inline edit-button" @click="openDialog">
+      <v-icon size="20" color="grey darken-3">mdi-pencil</v-icon>
+    </div>
+
     <v-dialog v-model="dialog" max-width="400">
       <v-card class="pb-3">
-        <v-card-title class="headline justify-center">Добавление класса</v-card-title>
+        <v-card-title class="headline justify-center">Изменение класса</v-card-title>
         <v-divider></v-divider>
         
         <v-card-text class="pt-5">
-          <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="addClass">
+          <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="changeClass">
             <v-text-field
               v-model="name"
               :rules="nameClassRules"
@@ -45,8 +43,8 @@
         </v-card-text>
 
         <v-card-actions class="justify-center">
-          <v-btn :disabled="!valid" color="success" class="px-5" @click.prevent="addClass" >
-            Добавить
+          <v-btn :disabled="!valid" color="success" class="px-5" @click.prevent="changeClass" >
+            Изменить
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -58,7 +56,13 @@
 const validName = require("@/filters/filters").validName;
 
 export default {
-  name: "AddButton",
+  name: "EditButton",
+  props: {
+    obj: {
+      type: Object,
+      required: true
+    }
+  },
   data: () => ({
     dialog: false,
     valid: true,
@@ -75,14 +79,14 @@ export default {
   }),
   computed: {
     types() {
-      return this.$store.state.types.concat(this.$store.state.objects);
+      return this.$store.state.types.concat(this.$store.state.objects).filter(v => v.id != this.obj.id);
     }
   },
   methods: {
     openDialog() {
       this.dialog = true;
-      this.valid = true;
-      this.nameClass = "";
+      this.name = this.obj.name;
+      this.fields = JSON.parse(JSON.stringify(this.obj.fields));
     },
     addField() {
       this.fields.push({ name: "", type: null });
@@ -90,22 +94,33 @@ export default {
     removeField(index) {
       this.fields.splice(index, 1);
     },
-    addClass() {
+    changeClass() {
       if (this.$refs.form.validate()) {
         this.dialog = false;
         let obj = {
+          id: this.obj.id,
           name: this.name,
           fields: this.fields
         }
-        this.$store.commit("addObject", obj);
+        this.$store.commit("changeObject", obj);
       }
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.v-icon::after {
-  content: none !important;
+<style>
+.edit-button {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: 10px;
+  border: 1px solid rgba(0,0,0,0);
+  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 100%;
+}
+.edit-button:hover {
+  border: 1px solid rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.05);
 }
 </style>

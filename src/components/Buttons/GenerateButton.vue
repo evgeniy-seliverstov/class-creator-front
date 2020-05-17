@@ -1,5 +1,5 @@
 <template>
-  <v-btn>
+  <v-btn dark>
     <v-icon size="20" class="mr-2">mdi-google-circles-extended</v-icon>
     Сгенерировать
   </v-btn>

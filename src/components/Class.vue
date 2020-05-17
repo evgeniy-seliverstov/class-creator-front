@@ -1,6 +1,9 @@
 <template>
   <div class="d-flex flex-column grey lighten-2 class" color="grey darken-1">
-    <div class="class-title text-truncate text-center">{{ obj.name }}</div>
+    <div class="class-title text-truncate text-center">
+      <span>{{ obj.name }}</span>
+      <edit-button :obj="obj" />
+    </div>
     <div class="class-field text-truncate text-center" v-for="(field, index) in obj.fields" :key="index">
       {{ `${field.name}: ${types.find(v => v.id == field.type).name}` }}
     </div>
@@ -8,6 +11,8 @@
 </template>
 
 <script>
+import EditButton from "@/components/Buttons/EditButton";
+
 export default {
   name: "Class",
   props: {
@@ -20,6 +25,9 @@ export default {
     types() {
       return this.$store.state.types.concat(this.$store.state.objects);
     }
+  },
+  components: {
+    "edit-button": EditButton
   }
 }
 </script>
@@ -28,8 +36,10 @@ export default {
 .class {
   width: 250px;
   border-radius: 5px;
+  border: 1px solid;
 
   &-title {
+    position: relative;
     width: 100%;
     color: rgba(0,0,0,0.87);
     padding: 7px 10px;
@@ -40,7 +50,6 @@ export default {
     transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
-      background: #F5F5F5;
       cursor: pointer;
     }
   }
