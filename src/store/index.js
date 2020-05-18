@@ -6,9 +6,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     types: [
-      { id: 1, name: "int" },
-      { id: 2, name: "string" },
-      { id: 3, name: "datetime" },
+      { id: 1, name: "byte" },
+      { id: 2, name: "short" },
+      { id: 3, name: "char" },
+      { id: 4, name: "int" },
+      { id: 5, name: "long" },
+      { id: 6, name: "float" },
+      { id: 7, name: "double" },
+      { id: 8, name: "string" },
+      { id: 9, name: "boolean" },
     ],
     objects: [
       {
