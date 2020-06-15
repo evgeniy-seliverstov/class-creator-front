@@ -3,7 +3,7 @@
     <v-content>
       <div class="ma-4 buttons">
         <add-button />
-        <generate-button class="ml-4"/>
+        <generate-button @click="generate" class="ml-4"/>
       </div>
 
       <div ref="canvasWrapp" class="canvas" @mousemove="mouseMove"  @mouseup="mouseUp">
@@ -23,6 +23,7 @@
 import AddButton from "@/components/Buttons/AddButton";
 import GenerateButton from "@/components/Buttons/GenerateButton";
 import Class from "@/components/Class";
+import axios from "@/plugins/axios";
 
 export default {
   name: 'App',
@@ -113,6 +114,18 @@ export default {
 
       });
       this.ctx.stroke();
+    },
+    generate() {
+      const tables = this.$store.state.objects;
+      axios.post("/", tables)
+        .then(({ data }) => {
+          this.$noty.success(data.message);
+        })
+        .catch(e => {
+          if (e.response.data) {
+            this.$noty.error(e.response.data.message);
+          }
+        });
     }
   },
   components: {
